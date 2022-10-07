@@ -14,7 +14,7 @@ public class MainPage {
     // локатор для кнопки "Заказать" вверху
     private final static By ORDER_TOP = By.cssSelector("button.Button_Button__ra12g");
     // локатор для кнопки "Заказать" внизу
-    private final static By  ORDER_BUTTON = By.xpath(".//button[@class='Button_Button__ra12g " +
+    private final static By ORDER_BUTTON = By.xpath(".//button[@class='Button_Button__ra12g " +
             "Button_Middle__1CSJM']");
     // локатор для ожидания
     private By pagForWhomIsScooter = By.xpath(".//div[@class='Order_Content__bmtHS']");
@@ -32,24 +32,19 @@ public class MainPage {
     }
 
     //метод кликнуть по кнопке Заказать вверху
-    public void clickOrderTop() {
-        driver.findElement(ORDER_TOP).click();
-    }
-    //метод кликнуть по кнопке заказать внизу
-    public void clickOrderBottom(){
-        driver.findElement(ORDER_BUTTON).click();
+    public void clickOrder(String button) {
+        if (button.equals("Верхняя"))
+            driver.findElement(ORDER_TOP).click();
+        else if (button.equals("Нижняя")) {
+            JavascriptExecutor je = (JavascriptExecutor) driver;
+            je.executeScript("arguments[0].scrollIntoView(true);", driver.findElement(ORDER_BUTTON));
+            driver.findElement(ORDER_BUTTON).click();
+        }
     }
 
     //метод ожидания загрузки страницы
     public void downloadForWhomScooter() {
         new WebDriverWait(driver, 3)
                 .until(ExpectedConditions.elementToBeClickable(pagForWhomIsScooter));
-    }
-
-    //скролл
-    public void scroll() {
-        WebElement element = driver.findElement(By.id("root"));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", element);
-
     }
 }
